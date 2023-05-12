@@ -1,18 +1,21 @@
 import React from 'react';
 import './Main.css';
 
+import WeatherCard from '../WeatherCard';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+
+
 const Main = () => {
 	return (
 		<div className="container">
 			<div className="content">
 				<div className="search">
-					<input type="text" />
+					<input type="text" placeholder="Search City"></input>
+					<SearchOutlinedIcon />
 				</div>
-				<div className="weather-card-container">
-					<div className="weather-card">card</div>
-					<div className="weather-card">card</div>
-					<div className="weather-card">card</div>
-				</div>
+				<WeatherCard />
+				<WeatherCard />
+				<WeatherCard />
 			</div>
 		</div>
 	);
