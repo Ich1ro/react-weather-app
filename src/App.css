@@ -1,21 +1,22 @@
+body {
+	background: #E8EBF3;
+}
+
+.header{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 50px;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.title {
+	padding: 0 10px;
+}
+
 .wrapper {
-    height: 100vh;
+	height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-	background-image: linear-gradient(
-		to right top,
-		#d16ba5,
-		#c777b9,
-		#ba83ca,
-		#aa8fd8,
-		#9a9ae1,
-		#8aa7ec,
-		#79b3f4,
-		#69bff8,
-		#52cffe,
-		#41dfff,
-		#46eefa,
-		#5ffbf1
-	);
+	
 }
