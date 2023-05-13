@@ -3,7 +3,7 @@
 	margin: 0 auto;
 }
 
-.weather-card {
+.weather-card-day {
 	width: 100%;
 	margin: 10px 0;
 	height: 100px;
@@ -15,6 +15,22 @@
 		#4dafff,
 		#66bcff,
 		#80c9fe
+	);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.weather-card-night {
+	width: 100%;
+	margin: 10px 0;
+	height: 100px;
+	border-radius: 15px;
+	background-image: linear-gradient(
+		to right top,
+		#2560f9,
+		#5562f3,
+		#7064ec,
+		#8466e6,
+		#936ae0
 	);
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -32,13 +48,13 @@
 	justify-content: space-between;
 }
 
-.wheather{
+.wheather {
 	font-weight: 100;
 }
 
 .details-information {
-    display: flex;
-    flex-direction: row;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
 }
 
