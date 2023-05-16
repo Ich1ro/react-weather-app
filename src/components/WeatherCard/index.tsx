@@ -1,35 +1,40 @@
 import React, { useEffect } from 'react';
 import './WeatherCard.css';
-import { Weather } from '../../store/@types/types';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Weather } from '../../store/@types/types';
+import ReplayIcon from '@mui/icons-material/Replay';
+import InfoIcon from '@mui/icons-material/Info';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	weather: Weather;
+	city: string;
+	onDelete: Function;
+	onUpdate: Function;
 }
 
-const WeatherCard = ({ weather }: Props) => {
+const WeatherCard = ({ city, weather, onDelete, onUpdate }: Props) => {
 	const [isNight, setIsNight] = React.useState(false);
 
-	console.log(weather);
 	const weatherText = weather.weather.map(text => text.main).toString();
 	const weatherIcon = weather.weather.map(text => text.icon).toString();
 	const { dt } = weather;
-	const sunset = weather.sys.sunset	
+	const sunset = weather.sys.sunset;
 
 	useEffect(() => {
 		function dayOrNight(timestamp: number, sunset: number) {
 			const currDate = new Date(timestamp * 1000),
-			currH = currDate.getHours();
-	
+				currH = currDate.getHours();
+
 			const sunsetDate = new Date(sunset * 1000),
-			sunsetH = sunsetDate.getHours();
-	
-			currH > sunsetH ? setIsNight(true) : setIsNight(false)
-			
+				sunsetH = sunsetDate.getHours();
+
+			currH > sunsetH ? setIsNight(true) : setIsNight(false);
+
 		}
-		dayOrNight(dt, sunset)
-		
-	}, [])
+		dayOrNight(dt, sunset);
+	}, [isNight, dt, sunset]);
 
 	function convertTimestamp(timestamp: number) {
 		const days = [
@@ -56,7 +61,7 @@ const WeatherCard = ({ weather }: Props) => {
 			'December'
 		];
 		let d = new Date(timestamp * 1000),
-			mm = ('0' + (d.getMonth())), // Months are zero based. Add leading 0.
+			mm = '0' + d.getMonth(), // Months are zero based. Add leading 0.
 			dd = ('0' + d.getDate()).slice(-2), // Add leading 0.
 			wd = ('0' + d.getDay()).slice(-1),
 			time;
@@ -64,15 +69,14 @@ const WeatherCard = ({ weather }: Props) => {
 		const res = days[wd];
 		const month = months[Math.round(Number(mm))];
 
-		time = res + ', ' + dd + ' ' + month ;
+		time = res + ', ' + dd + ' ' + month;
 		return time;
 	}
 
-	console.log(isNight);
-
 	return (
 		<div className="weather-card-container">
-			<div className={isNight ? 'weather-card-night' : 'weather-card-day'}>
+			<div
+				className={isNight ? 'weather-card-night' : 'weather-card-day'}>
 				<div className="weather-card-wrapper">
 					<div className="details">
 						<p className="wheather">{weatherText}</p>
@@ -89,6 +93,27 @@ const WeatherCard = ({ weather }: Props) => {
 								</p>
 							</div>
 						</div>
+					</div>
+					<div className="buttons">
+						<button className="info">
+							<Link to={`/details/${city}`}>
+								<InfoIcon />
+							</Link>
+						</button>
+						<button className="refresh">
+							<ReplayIcon
+								onClick={() => {
+									onUpdate(weather.name);
+								}}
+							/>
+						</button>
+						<button className="delete">
+							<DeleteIcon
+								onClick={() => {
+									onDelete(city, weather.name);
+								}}
+							/>
+						</button>
 					</div>
 					<img
 						src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
