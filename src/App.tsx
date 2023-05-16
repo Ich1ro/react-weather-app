@@ -17,15 +17,15 @@ function App() {
 	return (
 		<>
 			<div className="header">
-				<Link to={'/'}>
+				<Link to={'/react-weather-app/'}>
 					<h3 className="title">Weather app</h3>
 					<CloudOutlinedIcon />
 				</Link>
 			</div>
 			<div className="wrapper">
 				<Routes>
-					<Route path="/" element={<Main weather={weather} />} />
-					<Route path="/details/:city" element={<Details weather={weather}/>} />
+					<Route path="/react-weather-app/" element={<Main weather={weather} />} />
+					<Route path="/react-weather-app/details/:city" element={<Details weather={weather}/>} />
 				</Routes>
 			</div>
 		</>
