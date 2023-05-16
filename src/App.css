@@ -1,0 +1,28 @@
+body {
+	background: #E8EBF3;
+}
+
+.header{
+	height: 50px;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.header a{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	color: black;
+	height: 50px;
+}
+
+.title {
+	padding: 0 10px;
+}
+
+.wrapper {
+	height: 100%;
+    display: flex;
+    justify-content: center;
+	
+}

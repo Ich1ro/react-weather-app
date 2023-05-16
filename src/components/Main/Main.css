@@ -1,0 +1,53 @@
+.container {
+	display: flex;
+	justify-content: center;
+	width: 80%;
+	height: 100%;
+}
+
+.content {
+	width: 100%;
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.search {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+    align-items: center;
+    flex-direction: column;
+	max-height: 250px;
+	margin-bottom: 20px;
+}
+
+input {
+	width: 275px;
+	background: none;
+	outline: none;
+	border: none;
+	border-bottom: 1px solid black;
+}
+
+.data-resulst {
+    position: relative;
+	margin-top: 5px;
+	width: 300px;
+	max-height: 200px;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	overflow: hidden;
+	overflow-y: auto;
+	z-index: 1;
+}
+
+.data-resulst p {
+    padding-left: 10px;
+}
+
+.data-resulst p:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}

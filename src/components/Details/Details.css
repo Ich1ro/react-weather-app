@@ -1,0 +1,17 @@
+.details-wrapper {
+    display: flex;
+    width: 80%;
+    height: 100%;
+    margin-top: 15px;
+}
+
+.ditails-info {
+    display: flex;
+    justify-content: center;
+}
+
+.partial-temp-detail {
+    display: flex;
+    align-items: center;
+}
+
