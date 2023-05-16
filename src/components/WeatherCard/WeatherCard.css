@@ -48,6 +48,36 @@
 	justify-content: space-between;
 }
 
+.info a {
+	width: 24px;
+	height: 24px;
+	color: white;
+	margin: 0
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+}
+
+.buttons > * {
+	padding: 5px;
+}
+
+.refresh, .info, .delete {
+	width: 34px;
+	height: 34px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 3px;
+	background: none;
+	outline: none;
+	border: none;
+	color: white;
+	cursor: pointer
+}
+
 .wheather {
 	font-weight: 100;
 }
