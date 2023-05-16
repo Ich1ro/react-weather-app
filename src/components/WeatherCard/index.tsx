@@ -96,7 +96,7 @@ const WeatherCard = ({ city, weather, onDelete, onUpdate }: Props) => {
 					</div>
 					<div className="buttons">
 						<button className="info">
-							<Link to={`/details/${city}`}>
+							<Link to={`/react-weather-app/details/${city}`}>
 								<InfoIcon />
 							</Link>
 						</button>
