@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import currentWeatherSliceReducer from './slices/currentWeatherSlice';
+import weatherChartsSliceReducer from './slices/weatherChartsSlice';
 import {
 	persistStore,
 	persistReducer,
@@ -7,7 +8,8 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
-	currentWeatherSliceReducer
+	currentWeatherSliceReducer,
+	weatherChartsSliceReducer
 });
 
 const persistConfig = {
