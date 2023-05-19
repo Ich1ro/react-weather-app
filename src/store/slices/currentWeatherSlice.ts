@@ -43,32 +43,46 @@ export const currentWeatherSlice = createSlice({
 				},
 				dt: action.payload.data.dt,
 				name: action.payload.data.name,
-				  weather: [{
-					main: action.payload.data.weather.map(item => (item.main)).toString(),
-					icon: action.payload.data.weather.map(item => (item.icon)).toString()
-				  }],
+				weather: [
+					{
+						main: action.payload.data.weather
+							.map(item => item.main)
+							.toString(),
+						icon: action.payload.data.weather
+							.map(item => item.icon)
+							.toString()
+					}
+				],
 				sys: {
-					sunset: action.payload.data.sys.sunset
+					sunset: action.payload.data.sys.sunset,
+					sunrise: action.payload.data.sys.sunrise
 				},
 				wind: {
 					speed: action.payload.data.wind.speed
 				}
-			}
-			const existingWeatherIndex = state.weather.findIndex(
-				(weather) => weather.name === newWeather.name
-			  );
-			  if (existingWeatherIndex !== -1) {
+			};
+			const existingWeatherIndex = state.weather?.findIndex(
+				weather => weather.name === newWeather.name
+			);
+
+			if (existingWeatherIndex !== -1) {
 				const existingWeather = state.weather[existingWeatherIndex];
+
 				if (existingWeather.dt !== newWeather.dt) {
-				  const updatedWeather = {
-					...existingWeather,
-					date: newWeather.dt,
-				  };
-				  state.weather.splice(existingWeatherIndex, 1, updatedWeather);
+					const updatedWeather = {
+						...existingWeather,
+						dt: newWeather.dt
+					};
+
+					state.weather.splice(
+						existingWeatherIndex,
+						1,
+						updatedWeather
+					);
 				}
-			  } else {
-				state.weather.push(newWeather);
-			  }
+			} else {
+				state.weather = [...state.weather, newWeather];
+			}
 			state.response = {
 				status: action.payload.status,
 				massage: action.payload.statusText
@@ -85,11 +99,13 @@ export const currentWeatherSlice = createSlice({
 			};
 		},
 		deleteCurrentWeather(state, action: PayloadAction<string>) {
-			state.weather = state.weather.filter((item) => item.name !== action.payload);
-		},
+			state.weather = state.weather.filter(
+				item => item.name !== action.payload
+			);
+		}
 	}
 });
 
-export const {deleteCurrentWeather} = currentWeatherSlice.actions;
+export const { deleteCurrentWeather } = currentWeatherSlice.actions;
 
 export default currentWeatherSlice.reducer;
