@@ -18,7 +18,7 @@ interface Props {
 
 const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
 	const context = React.useContext(WeatherContext);
-	const { setCurrentCity, currentCity } = context ?? {};
+	const { setCurrentCity } = context ?? {};
 	const [isNight, setIsNight] = React.useState(false);
 
 	const { name, weather, main, dt, sys } = weatherData;
@@ -76,7 +76,7 @@ const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
 					</div>
 					<div className="buttons">
 						<button className="info" onClick={() => onInfo(city)}>
-							<Link to={`/react-weather-app/details/${city}`}>
+							<Link to={`/details/${city}`}>
 							<InfoIcon />
 							</Link>
 						</button>

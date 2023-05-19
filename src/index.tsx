@@ -15,7 +15,7 @@ root.render(
 	<Provider store={store}>
 		<PersistGate loading={null} persistor={persistor}>
 			<WeatherContextProvider>
-				<BrowserRouter>
+				<BrowserRouter basename={process.env.REACT_APP_BASE_URL}>
 					<App />
 				</BrowserRouter>
 			</WeatherContextProvider>
