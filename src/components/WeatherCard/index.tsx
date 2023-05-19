@@ -55,8 +55,6 @@ const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
 		}
 	};
 
-	console.log(currentCity);
-
 	return (
 		<div className="weather-card-container">
 			<div
