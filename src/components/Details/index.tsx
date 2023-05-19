@@ -1,87 +1,117 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import './Details.css';
 
-import { useParams } from 'react-router-dom';
 import { Weather } from '../../store/@types/types';
+import Charts from '../Charts';
+import { convertTimestamp } from '../../utils';
+import { WeatherContext } from '../../context/WeatherContext';
 
 interface Props {
-	weather: Weather[];
+	currentWeather: Weather[];
 }
 
-const Details = ({ weather }: Props) => {
-	const { city } = useParams();
+const Details = ({ currentWeather }: Props) => {
+	// const [detailsWeather, setDetailsWeather] = React.useState<DetailsWeather>({});
+	const [parsedData, setParsedData] = React.useState<Weather | null>(null);
+	const context = useContext(WeatherContext);
+	const { weatherCharts, currentCity } = context ?? {};
+	const weatherData = currentWeather.find(item => item.name === currentCity);
+	// const parsedData = useRef<Weather | null>(null);
 
-	const weatherData = weather.find(item => item.name === city);
+	const { name, weather, main, wind, dt } = parsedData || {};
+	const weatherText = weather?.map(text => text.main).join('');
+	const weatherIcon = weather?.map(text => text.icon).join('');
 
-	if (!weatherData) {
-		return <div>Loading...</div>;
-	}
+	useEffect(() => {
+		const weatherInLocalStorage = localStorage.getItem('detailsWeather');
+		if (weatherInLocalStorage) {
+			const parsedWeather = JSON.parse(weatherInLocalStorage);
+			setParsedData(parsedWeather);
+		}
+	}, []);
 
-	const weatherText = weatherData.weather.map(text => text.main).toString();
-	const weatherIcon = weatherData.weather.map(text => text.icon).toString();
-	const { dt } = weatherData;
+	useEffect(() => {
+		if (weatherData !== undefined) {
+			setParsedData(weatherData);
+			localStorage.setItem('detailsWeather', JSON.stringify(weatherData));
+		}
+	}, [weatherData]);
 
-	function convertTimestamp(timestamp: number) {
-		const days = [
-			'Sunday',
-			'Monday',
-			'Tuesday',
-			'Wednesday',
-			'Thursday',
-			'Friday',
-			'Saturday'
-		];
-		var months = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		let d = new Date(timestamp * 1000),
-			mm = '0' + d.getMonth(), // Months are zero based. Add leading 0.
-			dd = ('0' + d.getDate()).slice(-2), // Add leading 0.
-			wd = ('0' + d.getDay()).slice(-1),
-			time;
+	useEffect(() => {
+		return () => {
+			setParsedData(null); // Очистка состояния при размонтировании
+		};
+	}, []);
 
-		const res = days[wd];
-		const month = months[Math.round(Number(mm))];
+	const chartsDate =
+		weatherCharts &&
+		weatherCharts[0]?.list.map(item => {
+			const date = new Date(item.dt_txt);
+			const day = date.getDate().toString().padStart(2, '0');
+			const month = (date.getMonth() + 1).toString().padStart(2, '0');
+			const hours = date.getHours().toString().padStart(2, '0');
+			const minutes = date.getMinutes().toString().padStart(2, '0');
+			return `${day}.${month} ${hours}:${minutes}`;
+		});
 
-		time = res + ', ' + dd + ' ' + month;
-		return time;
-	}
+	const chartsTemp =
+		weatherCharts &&
+		weatherCharts[0]?.list.map(item => Math.round(item.main.temp));
 
 	return (
 		<div className="details-wrapper">
-			<div className="ditails-info">
-				<div className="details">
-					<h3>{weatherData.name}, {convertTimestamp(dt)}</h3>
-					<div className='partial-temp-detail'><img
-						src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
-						alt=""
-						width={69}
-						height={69}
-						className="img"
-					/>
-					<h2>{Math.round(weatherData.main.temp)}°</h2>
-					</div>
-					<h3>{weatherText}</h3>
-					<div className="full-temp-detail">
-						<div></div>
-						<p>Feels like: {Math.round(weatherData.main.feels_like)}°</p>
-						<p>Max temp: {Math.round(weatherData.main.temp_max)}°</p>
-						<p>Min temp: {Math.round(weatherData.main.temp_min)}°</p>
-						<p>Wind speed: {Math.round(weatherData.wind.speed)} m/s</p>
+			{parsedData ? (
+				<div className="ditails-info">
+					<div className="details">
+						<h3>
+							{name}, {convertTimestamp(dt || 0)}
+						</h3>
+						<div className="partial-temp-detail">
+							<img
+								src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
+								alt=""
+								width={69}
+								height={69}
+								className="img"
+							/>
+							<h2>{Math.round(main?.temp || 0)}°</h2>
+						</div>
+						<h3>{weatherText}</h3>
+						<div className="full-temp-detail">
+							<div className="text">
+								<div className="stick"></div>
+								<p>
+									Feels like:{' '}
+									{Math.round(main?.feels_like || 0)}°C
+								</p>
+								<div className="stick"></div>
+								<p>
+									Max temp: {Math.round(main?.temp_max || 0)}
+									°C
+								</p>
+								<div className="stick"></div>
+								<p>
+									Min temp: {Math.round(main?.temp_min || 0)}
+									°C
+								</p>
+								<div className="stick"></div>
+								<p>
+									Wind speed: {Math.round(wind?.speed || 0)}{' '}
+									m/s
+								</p>
+								<div className="stick"></div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			) : (
+				<div></div>
+			)}
+			{weatherCharts ? (
+				<Charts chartsTemp={chartsTemp || []} chartsDate={chartsDate} />
+			) : (
+				<div></div>
+			)}
 		</div>
 	);
 };

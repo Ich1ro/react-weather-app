@@ -1,17 +1,37 @@
 .details-wrapper {
-    display: flex;
-    width: 80%;
-    height: 100%;
-    margin-top: 15px;
+	display: flex;
+	width: 80%;
+	height: 100%;
+	margin-top: 10px;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .ditails-info {
-    display: flex;
-    justify-content: center;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	background-color: #a9d3f8;
+	border-radius: 14px;
 }
 
-.partial-temp-detail {
-    display: flex;
-    align-items: center;
+.partial-temp-detail,
+h3 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
+.full-temp-detail {
+	display: flex;
+	justify-content: center;
+}
+
+.text {
+	display: flex;
+}
+
+.stick {
+	border-right: 1px solid;
+	margin: 0 8px;
+}
