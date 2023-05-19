@@ -6,72 +6,56 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
+import { convertTimestamp } from '../../utils';
+import { WeatherContext } from '../../context/WeatherContext';
 
 interface Props {
-	weather: Weather;
+	weatherData: Weather;
 	city: string;
 	onDelete: Function;
 	onUpdate: Function;
 }
 
-const WeatherCard = ({ city, weather, onDelete, onUpdate }: Props) => {
+const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
+	const context = React.useContext(WeatherContext);
+	const { setCurrentCity, currentCity } = context ?? {};
 	const [isNight, setIsNight] = React.useState(false);
 
-	const weatherText = weather.weather.map(text => text.main).toString();
-	const weatherIcon = weather.weather.map(text => text.icon).toString();
-	const { dt } = weather;
-	const sunset = weather.sys.sunset;
+	const { name, weather, main, dt, sys } = weatherData;
+
+	const weatherText = weather.map(text => text.main).join('');
+	const weatherIcon = weather.map(text => text.icon).join('');
+	const sunset = sys.sunset;
+	const sunrise = sys.sunrise;
 
 	useEffect(() => {
-		function dayOrNight(timestamp: number, sunset: number) {
+		function dayOrNight(
+			timestamp: number,
+			sunset: number,
+			sunrise: number
+		) {
 			const currDate = new Date(timestamp * 1000),
-				currH = currDate.getHours();
+				currTime = currDate.getHours();
 
 			const sunsetDate = new Date(sunset * 1000),
-				sunsetH = sunsetDate.getHours();
+				sunsetTime = sunsetDate.getHours();
 
-			currH > sunsetH ? setIsNight(true) : setIsNight(false);
+			const sunriseDate = new Date(sunrise * 1000),
+				sunriseTime = sunriseDate.getHours();
 
+			const isNight = currTime < sunriseTime || currTime > sunsetTime;
+			setIsNight(isNight);
 		}
-		dayOrNight(dt, sunset);
-	}, [isNight, dt, sunset]);
+		dayOrNight(dt, sunset, sunrise);
+	}, [isNight, dt, sunset, sunrise]);
 
-	function convertTimestamp(timestamp: number) {
-		const days = [
-			'Sunday',
-			'Monday',
-			'Tuesday',
-			'Wednesday',
-			'Thursday',
-			'Friday',
-			'Saturday'
-		];
-		var months = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		let d = new Date(timestamp * 1000),
-			mm = '0' + d.getMonth(), // Months are zero based. Add leading 0.
-			dd = ('0' + d.getDate()).slice(-2), // Add leading 0.
-			wd = ('0' + d.getDay()).slice(-1),
-			time;
+	const onInfo = (city: string) => {
+		if (setCurrentCity) {
+			setCurrentCity(city || '');
+		}
+	};
 
-		const res = days[wd];
-		const month = months[Math.round(Number(mm))];
-
-		time = res + ', ' + dd + ' ' + month;
-		return time;
-	}
+	console.log(currentCity);
 
 	return (
 		<div className="weather-card-container">
@@ -81,36 +65,34 @@ const WeatherCard = ({ city, weather, onDelete, onUpdate }: Props) => {
 					<div className="details">
 						<p className="wheather">{weatherText}</p>
 						<div className="details-information">
-							<div className="temp">
-								{Math.round(weather.main.temp)}°
-							</div>
+							<div className="temp">{Math.round(main.temp)}°</div>
 							<div className="vertical-line"></div>
 							<div className="information">
 								<p>{convertTimestamp(dt)}</p>
 								<p>
 									<LocationOnIcon sx={{ fontSize: 11 }} />
-									{weather.name}
+									{name}
 								</p>
 							</div>
 						</div>
 					</div>
 					<div className="buttons">
-						<button className="info">
+						<button className="info" onClick={() => onInfo(city)}>
 							<Link to={`/react-weather-app/details/${city}`}>
-								<InfoIcon />
+							<InfoIcon />
 							</Link>
 						</button>
 						<button className="refresh">
 							<ReplayIcon
 								onClick={() => {
-									onUpdate(weather.name);
+									onUpdate(name);
 								}}
 							/>
 						</button>
 						<button className="delete">
 							<DeleteIcon
 								onClick={() => {
-									onDelete(city, weather.name);
+									onDelete(city, name);
 								}}
 							/>
 						</button>
