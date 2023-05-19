@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useCustomSelector } from './hooks/store';
 
 function App() {
-
+	
 	const weather = useCustomSelector(
 		state => state.currentWeatherSliceReducer.weather
 	);
@@ -25,7 +25,7 @@ function App() {
 			<div className="wrapper">
 				<Routes>
 					<Route path="/react-weather-app/" element={<Main weather={weather} />} />
-					<Route path="/react-weather-app/details/:city" element={<Details weather={weather}/>} />
+					<Route path="/react-weather-app/details/:city" element={<Details currentWeather={weather}/>} />
 				</Routes>
 			</div>
 		</>
