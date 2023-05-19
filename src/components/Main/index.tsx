@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import './Main.css';
 
 import WeatherCard from '../WeatherCard';
+import Empty from '../Empty';
+import Сities from '../../cities.json';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import Сities from '../../cities.json';
 import { useCustomDispatch } from '../../hooks/store';
 import { fetchCurrentWeather } from '../../store/thunks/fetchCurrentWeather';
 import { City, Weather } from '../../store/@types/types';
 import { deleteCurrentWeather } from '../../store/slices/currentWeatherSlice';
-import Empty from '../Empty';
 
 interface Props {
 	weather: Weather[];
@@ -141,7 +141,7 @@ const Main = ({ weather }: Props) => {
 							<WeatherCard
 								key={city}
 								city={city}
-								weather={weatherData}
+								weatherData={weatherData}
 								onDelete={onDelete}
 								onUpdate={onUpdate}
 							/>
