@@ -23,10 +23,10 @@ const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
 
 	const { name, weather, main, dt, sys } = weatherData;
 
-	const weatherText = weather.map(text => text.main).join('');
-	const weatherIcon = weather.map(text => text.icon).join('');
-	const sunset = sys.sunset;
-	const sunrise = sys.sunrise;
+	const weatherText = weather?.map(text => text.main).join('');
+	const weatherIcon = weather?.map(text => text.icon).join('');
+	const sunset = sys?.sunset;
+	const sunrise = sys?.sunrise;
 
 	useEffect(() => {
 		function dayOrNight(
@@ -63,7 +63,7 @@ const WeatherCard = ({ city, weatherData, onDelete, onUpdate }: Props) => {
 					<div className="details">
 						<p className="wheather">{weatherText}</p>
 						<div className="details-information">
-							<div className="temp">{Math.round(main.temp)}°</div>
+							<div className="temp">{Math.round(main?.temp)}°</div>
 							<div className="vertical-line"></div>
 							<div className="information">
 								<p>{convertTimestamp(dt)}</p>

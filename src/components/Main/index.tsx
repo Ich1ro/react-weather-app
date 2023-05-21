@@ -108,7 +108,9 @@ const Main = ({ weather }: Props) => {
 							type="text"
 							placeholder="Search City"
 							value={wordEntered}
-							onChange={handleFilter}></input>
+							onChange={handleFilter}
+							data-testid='input'
+							></input>
 						{filteredData.length === 0 ? (
 							<SearchOutlinedIcon />
 						) : (

@@ -18,12 +18,12 @@ function App() {
 			<div className="header">
 				<Link to={'/'}>
 					<h3 className="title">Weather app</h3>
-					<CloudOutlinedIcon />
+					<CloudOutlinedIcon data-testid='cloud-icon'/>
 				</Link>
 			</div>
 			<div className="wrapper">
 				<Routes>
-					<Route path="/" element={<Main weather={weather} />} />
+					<Route path="/" element={<Main data-testid="main-component" weather={weather} />} />
 					<Route
 						path="/details/:city"
 						element={<Details currentWeather={weather} />}

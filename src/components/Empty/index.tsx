@@ -4,7 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Empty = () => {
   return (
-    <div className='empty-wrapper'>
+    <div className='empty-wrapper' data-testid="empty">
         <h1>Welcome</h1>
         <h4>To get started, enter the city you are interested in into the search</h4>
         <p>Made with heart from Pavel</p>

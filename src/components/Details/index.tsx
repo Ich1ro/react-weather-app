@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './Details.css';
 
 import { Weather } from '../../store/@types/types';
@@ -11,16 +11,29 @@ interface Props {
 }
 
 const Details = ({ currentWeather }: Props) => {
-	// const [detailsWeather, setDetailsWeather] = React.useState<DetailsWeather>({});
 	const [parsedData, setParsedData] = React.useState<Weather | null>(null);
 	const context = useContext(WeatherContext);
 	const { weatherCharts, currentCity } = context ?? {};
-	const weatherData = currentWeather.find(item => item.name === currentCity);
-	// const parsedData = useRef<Weather | null>(null);
+	const weatherData = currentWeather?.find(item => item.name === currentCity);
 
 	const { name, weather, main, wind, dt } = parsedData || {};
 	const weatherText = weather?.map(text => text.main).join('');
 	const weatherIcon = weather?.map(text => text.icon).join('');
+
+	const chartsDate =
+		weatherCharts &&
+		weatherCharts[0]?.list.map(item => {
+			const date = new Date(item.dt_txt);
+			const day = date.getDate().toString().padStart(2, '0');
+			const month = (date.getMonth() + 1).toString().padStart(2, '0');
+			const hours = date.getHours().toString().padStart(2, '0');
+			const minutes = date.getMinutes().toString().padStart(2, '0');
+			return `${day}.${month} ${hours}:${minutes}`;
+		});
+
+	const chartsTemp =
+		weatherCharts &&
+		weatherCharts[0]?.list.map(item => Math.round(item.main.temp));
 
 	useEffect(() => {
 		const weatherInLocalStorage = localStorage.getItem('detailsWeather');
@@ -39,31 +52,16 @@ const Details = ({ currentWeather }: Props) => {
 
 	useEffect(() => {
 		return () => {
-			setParsedData(null); // Очистка состояния при размонтировании
+			setParsedData(null);
 		};
 	}, []);
-
-	const chartsDate =
-		weatherCharts &&
-		weatherCharts[0]?.list.map(item => {
-			const date = new Date(item.dt_txt);
-			const day = date.getDate().toString().padStart(2, '0');
-			const month = (date.getMonth() + 1).toString().padStart(2, '0');
-			const hours = date.getHours().toString().padStart(2, '0');
-			const minutes = date.getMinutes().toString().padStart(2, '0');
-			return `${day}.${month} ${hours}:${minutes}`;
-		});
-
-	const chartsTemp =
-		weatherCharts &&
-		weatherCharts[0]?.list.map(item => Math.round(item.main.temp));
-
+	
 	return (
 		<div className="details-wrapper">
 			{parsedData ? (
 				<div className="ditails-info">
 					<div className="details">
-						<h3>
+						<h3 data-testid="name">
 							{name}, {convertTimestamp(dt || 0)}
 						</h3>
 						<div className="partial-temp-detail">
